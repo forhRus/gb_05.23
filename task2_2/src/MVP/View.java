@@ -1,14 +1,47 @@
 package MVP;
 
-import java.util.List;
+import java.util.Scanner;
 
 public class View {
-    public void showMenu(String[] menu){
-        for (int i = 0; i < menu.length ; i++) {
-            System.out.printf("%d. %s\n", i+1, menu[i]);
+    Scanner scan;
+
+    public View(Scanner scan) {
+        this.scan = scan;
+    }
+
+    public void print(Object msg) {
+        System.out.print(msg.toString());
+    }
+
+    public void println(Object msg) {
+        print(String.format("%s\n", msg));
+    }
+
+    public void println() {
+        System.out.println();
+    }
+
+    public int inputInt() {
+        int input;
+        while (true) {
+            scan.nextLine();
+            if (scan.hasNextInt()) {
+                input = scan.nextInt();
+                scan.nextLine();
+                break;
+            }
+        }
+        return input;
+    }
+
+
+    public void showMenu(String[] menu) {
+        int point = 0;
+        for (String p : menu) {
+            System.out.printf("%d. %s\n", ++point, p);
         }
     }
-    public void output(String msg){
-        System.out.println(msg);
-    }
+
+
 }
+

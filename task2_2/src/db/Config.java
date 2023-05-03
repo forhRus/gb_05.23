@@ -1,3 +1,5 @@
+package db;
+
 import db.*;
 public class Config {
     private String myPrizes = "./db/myPrizes.csv";

@@ -1,13 +1,15 @@
 package base;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 
 public class Menu {
-    ArrayList menu;
-    String name;
+    private String[] menu;
 
-    public Menu(ArrayList menu, String name) {
+    public Menu(String[]  menu) {
         this.menu = menu;
-        this.name = name;
+    }
+
+    public String[] getMenu() {
+        return menu;
     }
 }

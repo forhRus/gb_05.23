@@ -1,11 +1,11 @@
 package base;
 
-public class Toy {
+public class Prize {
     private int id;
     private String name;
     private int count;
 
-    public Toy(int id, String name, int count) {
+    public Prize(int id, String name, int count) {
         this.id = id;
         this.name = name;
         this.count = count;
@@ -24,5 +24,12 @@ public class Toy {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        String result = String.format("id: %d, name: %s, count: %d",
+                this.id, this.name, this.count);
+        return result;
     }
 }

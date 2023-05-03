@@ -1,34 +1,64 @@
 package MVP;
 
+import base.Prize;
 import db.Config;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model{
-    Config conf;
+    private Config conf;
+    private ArrayList<Prize> prizeList;
+    private ArrayList<Prize> myPrizes;
     public Model(Config conf) {
         this.conf = conf;
         try{
             File filePrizeList = new File(conf.getPathPrizeList());
+            prizeList = loadList(filePrizeList);
             File fileMyPrizes = new File(conf.getMyPrizes());
+            myPrizes = loadList(fileMyPrizes);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
+    public ArrayList<Prize> getMyPrizes() {
+        return myPrizes;
+    }
 
-//    public List<int[]> loadVariables() {
-//        Config c = new Config();
-//        List<int[]> list = new ArrayList<>();
-//        try {
-//            FileReader fr = new FileReader(c.getPathLoad());
-//            BufferedReader bf = new BufferedReader(fr);
-//            String line = bf.readLine();
+    public ArrayList<Prize> getPrizeList() {
+        return prizeList;
+    }
+
+    public ArrayList<Prize> loadList(File file){
+        ArrayList<Prize> l = new ArrayList<>();
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader bf = new BufferedReader(fr);
+            String line = bf.readLine();
+            while (line != null){
+                l.add(parseLine(line));
+                line = bf.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return l;
+    }
+
+    private Prize parseLine(String line){
+        int idInt = Integer.valueOf(line.substring(0, line.indexOf(',')));
+        String name = line.substring(line.indexOf(',')+1, line.lastIndexOf(','));
+        int count = Integer.valueOf(line.substring(line.lastIndexOf(',')+1));
+        Prize prize = new Prize(idInt, name, count);
+        return prize;
+    }
+
+
+
 //            while (line != null) {
 //                list.add(parseLine(line));
 //                line = bf.readLine();
@@ -40,30 +70,7 @@ public class Model{
 //        }
 //        return list;
 //    }
-//    private int[] parseLine(String str) {
-//        int[] arr = new int[2];
-//        int iA = str.indexOf("a");
-//        int iB = str.indexOf("b");
-//        String s0 = iA < iB ? str.substring(iA+1, iB) : str.substring(iA+1);
-//        String s1 = iA < iB ? str.substring(iB+1) : str.substring(iB+1, iA);
-//        arr[0] = Integer.valueOf(s0);
-//        arr[1] = Integer.valueOf(s1);
-//        return arr;
-//    }
-//    public String stringPower(int a, int b){
-//        String result;
-//        if (a == 0 && b == 0) {
-//            result = "Не определено";
-//        } else if (b < 0) {
-//            b *= -1;
-//            double p = 1. / power(a, b);
-//            result = Double.toString(p);
-//        } else {
-//            int p = power(a, b);
-//            result = Integer.toString(p);
-//        }
-//        return result;
-//    }
+
 //    public void saveResult(List<String> list){
 //        Config c = new Config();
 //        try{

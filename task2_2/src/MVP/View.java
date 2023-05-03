@@ -1,5 +1,8 @@
 package MVP;
 
+import base.Prize;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class View {
@@ -46,6 +49,15 @@ public class View {
         int point = 0;
         for (String p : menu) {
             System.out.printf("\t%d. %s\n", ++point, p);
+        }
+    }
+    public void showList(List<Prize> l){
+        if(l.size() == 0){
+            System.out.println("Пусто");
+        } else {
+            for (Prize p: l) {
+                System.out.println(p);
+            }
         }
     }
 

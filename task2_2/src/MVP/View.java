@@ -22,23 +22,30 @@ public class View {
     }
 
     public int inputInt() {
-        int input;
+        int input = 0;
         while (true) {
-            scan.nextLine();
             if (scan.hasNextInt()) {
                 input = scan.nextInt();
-                scan.nextLine();
                 break;
             }
+            scan.nextLine();
         }
         return input;
     }
 
+    public int choiceInput(int length){
+        while (true){
+            int choice = inputInt();
+            if (0 < choice && choice <= length) {
+                return choice;
+            }
+        }
+    }
 
     public void showMenu(String[] menu) {
         int point = 0;
         for (String p : menu) {
-            System.out.printf("%d. %s\n", ++point, p);
+            System.out.printf("\t%d. %s\n", ++point, p);
         }
     }
 

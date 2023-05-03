@@ -43,13 +43,22 @@ public class App {
         GG: while (true){
             view.println("Главное меню");
             view.showMenu(mainMenu.getMenu());
-            int choice = view.inputInt();
+            int choice = view.choiceInput(mainMenu.getExit());
+            if (choice == mainMenu.getExit()){
+                break;
+            }
             switch (choice){
                 case 4: // выход
                     break GG;
                 case 1: // Начать розыгрыш
+                    System.out.println("Начать розыгрыш");
+                    break;
                 case 2: // В меню "список призов"
+                    System.out.println("Список призов");
+                    break;
                 case 3: // вывести список моих призов
+                    System.out.println("вывести список моих призов");
+                    break;
             }
         }
     }

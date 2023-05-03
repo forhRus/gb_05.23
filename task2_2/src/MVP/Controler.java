@@ -72,10 +72,10 @@ public class Controler {
     }
 
     private void listMenu() {
-        v.println("Выбирете действие:");
         Boolean flagSave = false;
         GG:
         while (true) {
+            v.println("Выбирите действие");
             v.showMenu(listMenu.getMenu());
             int choice = v.choiceInput(listMenu.getExit());
             switch (choice) {
@@ -98,8 +98,22 @@ public class Controler {
                     }
                     break;
                 case 4: // изменить количество призов
-                    
+                    v.print("Введите id приза, количество которого хотите изменить: ");
+                    id = v.inputInt();
+                    if (m.getPrizeList().hasPrize(id)){
+                        v.print("Введите новое количество призов: ");
+                        int count = v.inputInt();
+                        if (count <= 0){
+                            m.getPrizeList().setCount(id, 0);
+                        } else{
+                            m.getPrizeList().setCount(id, count);
+                        }
+                    } else {
+                        v.println("Приз с таким id не найден");
+                    }
+                    break;
             }
+            v.println();
         }
     }
     private void addPrize(){
@@ -134,7 +148,6 @@ public class Controler {
         if(f){
             m.addPrize(name, count);
         }
-        v.println();
     }
 
 }

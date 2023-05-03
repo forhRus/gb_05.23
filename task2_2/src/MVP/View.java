@@ -50,6 +50,7 @@ public class View {
         while (true){
             int choice = inputInt();
             if (0 < choice && choice <= length) {
+                System.out.println();
                 return choice;
             } else {
                 System.out.printf("Введите от 1 до %d: ", length);
@@ -62,6 +63,7 @@ public class View {
         for (String p : menu) {
             System.out.printf("\t%d. %s\n", ++point, p);
         }
+        System.out.println();
     }
     public void showList(List<Prize> l){
         if(l.size() == 0){
@@ -71,7 +73,6 @@ public class View {
                 System.out.println(p);
             }
         }
-        System.out.println();
     }
 
 

@@ -23,6 +23,13 @@ public class View {
     public void println() {
         System.out.println();
     }
+    public String inputStr(int length){
+        String str = scan.nextLine();
+        if(str.length() > length){
+            str = str.substring(0, length);
+        }
+        return str;
+    }
 
     public int inputInt() {
         int input = 0;
@@ -30,9 +37,12 @@ public class View {
             if (scan.hasNextInt()) {
                 input = scan.nextInt();
                 break;
+            } else {
+                System.out.println("Введите число!");
             }
             scan.nextLine();
         }
+        scan.nextLine();
         return input;
     }
 
@@ -41,6 +51,8 @@ public class View {
             int choice = inputInt();
             if (0 < choice && choice <= length) {
                 return choice;
+            } else {
+                System.out.printf("Введите от 1 до %d: ", length);
             }
         }
     }
@@ -59,6 +71,7 @@ public class View {
                 System.out.println(p);
             }
         }
+        System.out.println();
     }
 
 

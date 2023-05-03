@@ -10,6 +10,11 @@ public class Prize {
         this.name = name;
         this.count = count;
     }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public void changeCount(int n){
         count += n;
     }

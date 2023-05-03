@@ -2,6 +2,7 @@ package MVP;
 
 import base.Prize;
 import db.Config;
+import db.PrizeList;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,25 +10,24 @@ import java.util.List;
 
 public class Model{
     private Config conf;
-    private ArrayList<Prize> prizeList;
-    private ArrayList<Prize> myPrizes;
+    private PrizeList prizeList;
+    private PrizeList myPrizes;
     public Model(Config conf) {
         this.conf = conf;
         try{
             File filePrizeList = new File(conf.getPathPrizeList());
-            prizeList = loadList(filePrizeList);
+            prizeList = new PrizeList(loadList(filePrizeList));
             File fileMyPrizes = new File(conf.getMyPrizes());
-            myPrizes = loadList(fileMyPrizes);
+            myPrizes = new PrizeList(loadList(fileMyPrizes));
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-
-    public ArrayList<Prize> getMyPrizes() {
+    public PrizeList getMyPrizes() {
         return myPrizes;
     }
 
-    public ArrayList<Prize> getPrizeList() {
+    public PrizeList getPrizeList() {
         return prizeList;
     }
 
@@ -56,6 +56,10 @@ public class Model{
         Prize prize = new Prize(idInt, name, count);
         return prize;
     }
+    public void addPrize(String name, int count){
+        prizeList.add(name, count);
+    }
+
 
 
 

@@ -15,7 +15,7 @@ public class Prize {
         this.count = count;
     }
 
-    public void changeCount(int n){
+    public void changeCount(int n) {
         this.count += n;
     }
 

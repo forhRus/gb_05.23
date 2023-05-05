@@ -1,4 +1,4 @@
-package db;
+package base;
 
 import base.Prize;
 
@@ -23,11 +23,11 @@ public class PrizeList {
         return prizeList;
     }
 
-    public Prize getPrize(int id){
+    public Prize getPrize(int id) {
         Prize p = new Prize(0, "", 0);
         for (int i = 0; i < this.size; i++) {
             p = this.prizeList.get(i);
-            if (id == p.getId()){
+            if (id == p.getId()) {
                 break;
             }
         }
@@ -38,6 +38,7 @@ public class PrizeList {
         size++;
         this.prizeList.add(new Prize(id, name, count));
     }
+
     public void add(String name, int count) {
         this.add(++this.idCount, name, count);
     }
@@ -68,11 +69,11 @@ public class PrizeList {
         }
     }
 
-    private void setId(){
-        if(this.size > 0){
+    private void setId() {
+        if (this.size > 0) {
             int maxId = this.prizeList.get(0).getId();
             for (int i = 1; i < this.prizeList.size(); i++) {
-                if (maxId < this.prizeList.get(i).getId()){
+                if (maxId < this.prizeList.get(i).getId()) {
                     maxId = this.prizeList.get(i).getId();
                 }
             }

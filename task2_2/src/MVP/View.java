@@ -24,9 +24,9 @@ public class View {
         System.out.println();
     }
 
-    public String inputStr(int length){
+    public String inputStr(int length) {
         String str = scan.nextLine();
-        if(str.length() > length){
+        if (str.length() > length) {
             str = str.substring(0, length);
         }
         return str;
@@ -47,8 +47,8 @@ public class View {
         return input;
     }
 
-    public int choiceInput(int length){
-        while (true){
+    public int choiceInput(int length) {
+        while (true) {
             int choice = inputInt();
             if (0 < choice && choice <= length) {
                 System.out.println();
@@ -66,11 +66,12 @@ public class View {
         }
         System.out.println();
     }
-    public void showList(List<Prize> l){
-        if(l.size() == 0){
+
+    public void showList(List<Prize> l) {
+        if (l.size() == 0) {
             System.out.println("Пусто");
         } else {
-            for (Prize p: l) {
+            for (Prize p : l) {
                 System.out.println(p);
             }
         }

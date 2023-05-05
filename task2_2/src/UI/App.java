@@ -1,7 +1,9 @@
 package UI;
 
 import MVP.*;
+
 import java.util.Scanner;
+
 import db.Config;
 
 public class App {

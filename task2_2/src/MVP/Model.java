@@ -2,29 +2,31 @@ package MVP;
 
 import base.Prize;
 import db.Config;
-import db.PrizeList;
+import base.PrizeList;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Model{
+public class Model {
     private Config conf;
     private PrizeList prizeList;
     private PrizeList myPrizes;
     private ArrayList<Integer> arrayRandomId;
+
     public Model(Config conf) {
         this.conf = conf;
-        try{
+        try {
             File filePrizeList = new File(conf.getPathPrizeList());
             prizeList = new PrizeList(loadList(filePrizeList));
             File fileMyPrizes = new File(conf.getMyPrizes());
             myPrizes = new PrizeList(loadList(fileMyPrizes));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public PrizeList getMyPrizes() {
         return myPrizes;
     }
@@ -37,13 +39,13 @@ public class Model{
         return arrayRandomId;
     }
 
-    public ArrayList<Prize> loadList(File file){
+    public ArrayList<Prize> loadList(File file) {
         ArrayList<Prize> l = new ArrayList<>();
         try {
             FileReader fr = new FileReader(file);
             BufferedReader bf = new BufferedReader(fr);
             String line = bf.readLine();
-            while (line != null && line.length() > 0){
+            while (line != null && line.length() > 0) {
                 l.add(parseLine(line));
                 line = bf.readLine();
             }
@@ -58,18 +60,19 @@ public class Model{
         return l;
     }
 
-    private Prize parseLine(String line){
+    private Prize parseLine(String line) {
         int idInt = Integer.valueOf(line.substring(0, line.indexOf(',')));
-        String name = line.substring(line.indexOf(',')+1, line.lastIndexOf(','));
-        int count = Integer.valueOf(line.substring(line.lastIndexOf(',')+1));
+        String name = line.substring(line.indexOf(',') + 1, line.lastIndexOf(','));
+        int count = Integer.valueOf(line.substring(line.lastIndexOf(',') + 1));
         Prize prize = new Prize(idInt, name, count);
         return prize;
     }
-    public void addPrize(String name, int count){
+
+    public void addPrize(String name, int count) {
         prizeList.add(name, count);
     }
 
-    public void createRandomArray(){
+    public void createRandomArray() {
         ArrayList<Prize> tempList = prizeList.getList();
         int length = 0;
         for (int i = 0; i < tempList.size(); i++) {
@@ -89,11 +92,12 @@ public class Model{
         }
         shaffle(this.arrayRandomId);
     }
+
     // метод перемешивает массив
-    private void shaffle(ArrayList<Integer> arr){
+    private void shaffle(ArrayList<Integer> arr) {
         Random r = new Random();
         int length = arr.size();
-        for (int i = 0; i <  length; i++) {
+        for (int i = 0; i < length; i++) {
             int temp = arr.get(i);
             int rInd = r.nextInt(0, length);
             arr.set(i, arr.get(rInd));
@@ -101,49 +105,50 @@ public class Model{
         }
     }
 
-    public void printRandomAr(){
+    public void printRandomAr() {
         for (int i = 0; i < arrayRandomId.size(); i++) {
-            System.out.print(arrayRandomId.get(i)+" ");
+            System.out.print(arrayRandomId.get(i) + " ");
         }
         System.out.println();
     }
 
-    public int takePrize(){
+    public int takePrize() {
         int result = this.arrayRandomId.get(0);
         this.arrayRandomId.remove(0);
         return result;
     }
 
-    public void deletePrize(int id){
+    public void deletePrize(int id) {
         prizeList.delete(id);
     }
 
-    public void save(){
+    public void save() {
         File filePrizeList = new File(conf.getPathPrizeList());
         savePrizelist(filePrizeList, this.prizeList.getList());
         File fileMyPrizes = new File(conf.getMyPrizes());
         savePrizelist(fileMyPrizes, this.myPrizes.getList());
     }
-    public void savePrizelist(){
+
+    public void savePrizelist() {
         File filePrizeList = new File(conf.getPathPrizeList());
         savePrizelist(filePrizeList, this.prizeList.getList());
     }
-    private void savePrizelist(File file, List<Prize> prizeList){
-        try{
+
+    private void savePrizelist(File file, List<Prize> prizeList) {
+        try {
             FileWriter fw = new FileWriter(file, false);
-            for (Prize p: prizeList) {
+            for (Prize p : prizeList) {
                 String saveStr = prizeStringToSave(p);
                 fw.write(saveStr);
             }
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private String prizeStringToSave(Prize p){
-        return String.format("%d,%s,%d\n",p.getId(),p.getName(),p.getCount());
+
+    private String prizeStringToSave(Prize p) {
+        return String.format("%d,%s,%d\n", p.getId(), p.getName(), p.getCount());
     }
-
-
 
 }

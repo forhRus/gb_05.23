@@ -108,7 +108,7 @@ public class Controler {
             int choice = v.choiceInput(listMenu.getExit());
             switch (choice) {
                 case 5: // Вернуться в главное меню
-                    if (flagSave){
+                    if (flagSave) {
                         m.savePrizelist();
                     }
                     break GG;

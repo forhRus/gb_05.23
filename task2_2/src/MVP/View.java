@@ -23,6 +23,7 @@ public class View {
     public void println() {
         System.out.println();
     }
+
     public String inputStr(int length){
         String str = scan.nextLine();
         if(str.length() > length){
@@ -74,7 +75,6 @@ public class View {
             }
         }
     }
-
 
 }
 

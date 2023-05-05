@@ -1,6 +1,7 @@
 package MVP;
 
 import UI.Menu;
+import base.Prize;
 
 
 public class Controler {
@@ -31,15 +32,24 @@ public class Controler {
         while (true) {
             v.println("Главное меню");
             v.showMenu(mainMenu.getMenu());
-            int choice = v.choiceInput(mainMenu.getExit());
-            if (choice == mainMenu.getExit()) {
+            int exit = mainMenu.getExit();
+            int choice = v.choiceInput(exit);
+            if (choice == exit) {
                 break;
             }
             switch (choice) {
-                case 4: // выход
-                    break GG;
                 case 1: // Начать розыгрыш
-                    System.out.println("Начать розыгрыш");
+                    System.out.println("Для наглядности.");
+                    m.createRandomArray();
+
+                    if (m.getArrayRandomId().size() > 0) {
+                        System.out.print("Очерёность выдачи призов: ");
+                        m.printRandomAr();
+                        System.out.println();
+                        takeMenu();
+                    } else {
+                        v.println("Список призов пуст.");
+                    }
                     break;
                 case 2: // В меню "список призов"
                     listMenu();
@@ -54,20 +64,38 @@ public class Controler {
 
     private void takeMenu() {
         Boolean flagSave = false;
-        GG:
         while (true) {
             v.showMenu(takeMenu.getMenu());
-            int choice = v.inputInt();
-            switch (choice) {
-                case 2: // Сохранение списков и возврат в главное меню
-                    if(flagSave){
-
-                    }
-                    break GG;
-                case 1: // Получить случайный приз из списка
-//                    flagSave = true;
-                    break;
+            int exit = takeMenu.getExit();
+            int choice = v.choiceInput(exit);
+            if (choice == exit) { // завершить розыгрыш
+                if (flagSave) {
+                    m.save();
+                }
+                break;
             }
+            if (choice == 1) { //  получить приз
+                int id = m.takePrize();
+                flagSave = true;
+                Prize prize = m.getPrizeList().getPrize(id);
+                v.println(String.format("Вы выиграли: %s", prize.getName()));
+                prize.changeCount(-1);
+                if (prize.getCount() == 0) {
+                    m.deletePrize(id);
+                }
+                if (m.getMyPrizes().hasPrize(id)) {
+                    m.getMyPrizes().getPrize(id).changeCount(1);
+                } else {
+                    m.getMyPrizes().add(prize.getId(), prize.getName(), 1);
+                }
+                if (m.getArrayRandomId().size() == 0) {
+                    v.println("Призы закончились");
+                    m.save();
+                    break;
+                }
+            }
+            System.out.println();
+
         }
     }
 
@@ -80,74 +108,93 @@ public class Controler {
             int choice = v.choiceInput(listMenu.getExit());
             switch (choice) {
                 case 5: // Вернуться в главное меню
+                    if (flagSave){
+                        m.savePrizelist();
+                    }
                     break GG;
                 case 1: // Показать список призов
                     v.println("Список призов, участвующие в розыгрыше:");
                     v.showList(m.getPrizeList().getList());
                     break;
                 case 2: // Добавить приз
-                    addPrize();
+                    flagSave = addPrize();
                     break;
                 case 3: // Удалить приз
-                    v.print("Введите id приза, который хотите удалить: ");
-                    int id = v.inputInt();
-                    if (m.getPrizeList().hasPrize(id)){
-                        m.getPrizeList().delete(id);
-                    } else {
-                        v.println("Приз с таким id не найден");
-                    }
+                    flagSave = deletePrize();
                     break;
                 case 4: // изменить количество призов
-                    v.print("Введите id приза, количество которого хотите изменить: ");
-                    id = v.inputInt();
-                    if (m.getPrizeList().hasPrize(id)){
-                        v.print("Введите новое количество призов: ");
-                        int count = v.inputInt();
-                        if (count <= 0){
-                            m.getPrizeList().setCount(id, 0);
-                        } else{
-                            m.getPrizeList().setCount(id, count);
-                        }
-                    } else {
-                        v.println("Приз с таким id не найден");
-                    }
+                    flagSave = setCountPrize();
                     break;
             }
             v.println();
         }
     }
-    private void addPrize(){
+
+    private boolean addPrize() {
         String name;
         int count = 0;
-        Boolean f = false;
+        Boolean fSave = false;
         while (true) {
             v.print("Введите наименование приза: ");
             name = v.inputStr(16);
             if (name.equals("exit")) {
                 break;
-            } else if (name.length() > 0){
-                f = true;
+            } else if (name.length() > 0) {
+                fSave = true;
                 break;
             } else {
                 System.out.println("Вы не ввели наименование. Для выхода введите 'exit'");
             }
         }
-        while (f){
+        while (fSave) {
             v.print("Введите количество призов: ");
             count = v.inputInt();
             if (count < 0) {
-                f = false;
+                fSave = false;
                 break;
-            } else if (count > 0){
-                f = true;
+            } else if (count > 0) {
+                fSave = true;
                 break;
             } else {
                 System.out.println("Вы не ввели количество. Для выхода введите '-1'");
             }
         }
-        if(f){
+        if (fSave) {
             m.addPrize(name, count);
         }
+        return fSave;
+    }
+
+    private boolean deletePrize() {
+        boolean fSave = false;
+        v.print("Введите id приза, который хотите удалить: ");
+        int id = v.inputInt();
+        if (m.getPrizeList().hasPrize(id)) {
+            m.deletePrize(id);
+            fSave = true;
+        } else {
+            v.println("Приз с таким id не найден");
+        }
+        return fSave;
+    }
+
+    private boolean setCountPrize() {
+        Boolean fSave = false;
+        v.print("Введите id приза, количество которого хотите изменить: ");
+        int id = v.inputInt();
+        if (m.getPrizeList().hasPrize(id)) {
+            v.print("Введите новое количество призов: ");
+            int count = v.inputInt();
+            if (count <= 0) {
+                m.getPrizeList().setCount(id, 0);
+            } else {
+                m.getPrizeList().setCount(id, count);
+            }
+            fSave = true;
+        } else {
+            v.println("Приз с таким id не найден");
+        }
+        return fSave;
     }
 
 }
